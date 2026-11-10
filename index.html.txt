@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRIGHTNEWS — THE GAME, BEYOND THE SCORE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { blue: '#1d4ed8', dark: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-blue-600 selection:text-white">
+
+    <!-- HEADER NAVBAR -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/90 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-cyan-400 p-0.5 shadow-lg shadow-blue-600/30 flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+                        <span class="text-xl font-black text-white tracking-tighter">BN</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-blue-500 via-cyan-400 to-white bg-clip-text text-transparent">BRIGHTNEWS</span>
+                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-600/20 text-blue-400 border border-blue-500/30">PRO</span>
+                    </div>
+                    <p class="text-[10px] uppercase tracking-widest text-blue-400 font-semibold">THE GAME, BEYOND THE SCORE</p>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex items-center space-x-1 font-medium text-sm">
+                <button onclick="switchTab('home')" id="nav-home" class="px-4 py-2 rounded-lg bg-blue-600 text-white font-bold transition-all">HOME</button>
+                <button onclick="switchTab('matches')" id="nav-matches" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">MATCHES</button>
+                <button onclick="switchTab('predictions')" id="nav-predictions" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">PREDICTIONS</button>
+                <button onclick="switchTab('record')" id="nav-record" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">RECORD</button>
+                <button onclick="switchTab('kits')" id="nav-kits" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">BRIGHT KITS</button>
+                <button onclick="switchTab('admin')" id="nav-admin" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">ADMIN</button>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-[11px] text-slate-300">Live Data Active</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main id="app-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Dynamic content loaded via JS -->
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 bg-slate-900/50 py-8 text-center text-xs text-slate-500">
+        <p>&copy; 2026 BRIGHTNEWS MEDIA. THE GAME, BEYOND THE SCORE.</p>
+        <div class="flex justify-center space-x-6 mt-3">
+            <span class="hover:text-blue-400 cursor-pointer">Instagram: @brightnewss</span>
+            <span class="hover:text-blue-400 cursor-pointer">TikTok: @brightnewss</span>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        const DEMO_MATCHES = [
+            { id: 1, home: "Real Madrid", away: "Man City", score: "1 - 1", minute: "68'", status: "LIVE", competition: "UEFA Champions League", homeLogo: "👑", awayLogo: "⚡" },
+            { id: 2, home: "Arsenal", away: "Bayern Munich", score: "0 - 0", minute: "FT", status: "COMPLETED", competition: "UEFA Champions League", homeLogo: "🔴", awayLogo: "🔴" },
+            { id: 3, home: "Barcelona", away: "PSG", score: "", minute: "21:00 GMT", status: "UPCOMING", competition: "UEFA Champions League", homeLogo: "🔵", awayLogo: "🗼" }
+        ];
+
+        function switchTab(tab) {
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.className = "px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all";
+            });
+            const activeBtn = document.getElementById(`nav-${tab}`);
+            if(activeBtn) activeBtn.className = "px-4 py-2 rounded-lg bg-blue-600 text-white font-bold transition-all";
+
+            const container = document.getElementById('app-container');
+
+            if (tab === 'home') {
+                container.innerHTML = `
+                    <div class="space-y-12 pb-16">
+                        <section class="relative overflow-hidden bg-slate-900 text-white border border-slate-800 rounded-3xl p-8 sm:p-12 shadow-2xl">
+                            <div class="max-w-3xl space-y-6">
+                                <span class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-semibold uppercase tracking-wider">⚡ Live Matchday Broadcast Platform</span>
+                                <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-none bg-gradient-to-r from-white via-slate-100 to-blue-400 bg-clip-text text-transparent">THE GAME, BEYOND THE SCORE</h1>
+                                <p class="text-slate-400 text-base sm:text-lg">BRIGHTNEWS delivers live tactical analysis, real-time match data, expert editorial predictions, and deep football coverage.</p>
+                                <button onclick="switchTab('matches')" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-lg shadow-blue-600/30 transition-all">Explore Match Center</button>
+                            </div>
+                        </section>
+                        <h2 class="text-2xl font-bold">Live Match Center</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            ${DEMO_MATCHES.map(m => `
+                                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+                                    <div class="flex justify-between items-center text-xs font-bold text-blue-400">
+                                        <span>${m.competition}</span>
+                                        <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 animate-pulse">${m.minute}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center font-bold text-sm">
+                                        <div class="flex items-center space-x-2"><span>${m.homeLogo}</span><span>${m.home}</span></div>
+                                        <span>${m.score ? m.score.split('-')[0] : ''}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center font-bold text-sm">
+                                        <div class="flex items-center space-x-2"><span>${m.awayLogo}</span><span>${m.away}</span></div>
+                                        <span>${m.score ? m.score.split('-')[1] : ''}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'matches') {
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <h1 class="text-3xl font-black">Match Center</h1>
+                        <p class="text-xs text-slate-400">Live fixtures and schedule updates.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            ${DEMO_MATCHES.map(m => `
+                                <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                                    <div class="text-xs font-bold text-blue-400">${m.competition}</div>
+                                    <div class="flex justify-between text-base font-bold"><span>${m.homeLogo} ${m.home}</span><span>${m.score}</span></div>
+                                    <div class="flex justify-between text-base font-bold"><span>${m.awayLogo} ${m.away}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'predictions') {
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <h1 class="text-3xl font-black">Hybrid Predictions</h1>
+                        <p class="text-xs text-slate-400">Tactical insights verified by editorial experts.</p>
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                            <span class="text-xs font-bold text-blue-400">UEFA Champions League</span>
+                            <h3 class="font-bold text-lg">Real Madrid vs Manchester City</h3>
+                            <p class="text-xs text-slate-400">Prediction Pick: Both Teams to Score & Over 2.5 Goals (Predicted: 2 - 2)</p>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'record') {
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <h1 class="text-3xl font-black">Prediction Performance Record</h1>
+                        <div class="grid grid-cols-4 gap-4">
+                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center"><div class="text-xs text-slate-400">Total</div><div class="text-2xl font-black">15</div></div>
+                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center"><div class="text-xs text-slate-400">Won</div><div class="text-2xl font-black text-emerald-400">11</div></div>
+                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center"><div class="text-xs text-slate-400">Lost</div><div class="text-2xl font-black text-red-400">2</div></div>
+                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center"><div class="text-xs text-slate-400">Win Rate</div><div class="text-2xl font-black text-blue-400">85%</div></div>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'kits') {
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <h1 class="text-3xl font-black">BRIGHT KITS</h1>
+                        <p class="text-xs text-slate-400">Curated high-performance football kits and culture apparel.</p>
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                            <h3 class="font-bold text-lg">Brightnews Elite Home Jersey 26/27</h3>
+                            <p class="text-xs text-slate-400">Engineered with breathable aerodynamic mesh and deep electric blue gradient accents.</p>
+                            <span class="font-bold text-emerald-400 text-lg">$89.99</span>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'admin') {
+                container.innerHTML = `
+                    <div class="max-w-md mx-auto py-10 space-y-6">
+                        <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
+                            <h1 class="text-2xl font-black text-center">Private Admin Login</h1>
+                            <div class="space-y-4">
+                                <input type="text" id="adm-user" placeholder="Username (admin)" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
+                                <input type="password" id="adm-pass" placeholder="Password (password_rahasia_anda_123)" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
+                                <button onclick="checkAdminLogin()" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm">Authorize Session</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function checkAdminLogin() {
+            const u = document.getElementById('adm-user').value;
+            const p = document.getElementById('adm-pass').value;
+            if (u === 'admin' && p === 'password_rahasia_anda_123') {
+                document.getElementById('app-container').innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                            <h1 class="text-3xl font-black">Executive Admin Desk</h1>
+                            <button onclick="switchTab('admin')" class="px-4 py-2 rounded-xl bg-red-600/20 text-red-400 text-xs font-bold border border-red-500/30">Logout</button>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                            <h3 class="font-bold text-lg">Server API Key Configuration</h3>
+                            <p class="text-xs text-slate-400">Manage external Football Data & API-Football keys securely.</p>
+                            <input type="password" placeholder="FOOTBALL_DATA_API_KEY" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
+                            <input type="password" placeholder="API_FOOTBALL_KEY" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
+                            <button onclick="alert('API Keys saved successfully to secure server session!')" class="px-6 py-2.5 rounded-xl bg-blue-600 text-white text-xs font-bold">Save Configuration</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                alert('Username atau Password salah! Gunakan admin / password_rahasia_anda_123');
+            }
+        }
+
+        window.onload = () => switchTab('home');
+    </script>
+</body>
+</html>
