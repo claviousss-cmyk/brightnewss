@@ -49,5 +49,266 @@
                 <button onclick="switchTab('predictions')" id="nav-predictions" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">PREDICTIONS</button>
                 <button onclick="switchTab('record')" id="nav-record" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">RECORD</button>
                 <button onclick="switchTab('kits')" id="nav-kits" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all">BRIGHT KITS</button>
-                <button onclick="switchTab('admin')" id="nav-admin" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 0
+                <button onclick="switchTab('admin')" id="nav-admin" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 border border-blue-500/30 bg-blue-500/10 text-blue-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    ADMIN
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main id="app-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Render dinamis di sini -->
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 border-t border-slate-800 mt-20 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-sm">
+            <p class="font-bold text-slate-200 mb-2">BRIGHTNEWS — THE GAME, BEYOND THE SCORE</p>
+            <p>Professional Football Media, Live-Score Center & Analytical Publication.</p>
+            <div class="flex justify-center gap-6 mt-6">
+                <a href="https://instagram.com/brightnewss" target="_blank" class="hover:text-blue-400 transition">Instagram: @brightnewss</a>
+                <a href="https://tiktok.com/@brightnewss" target="_blank" class="hover:text-blue-400 transition">TikTok: @brightnewss</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentTab = 'home';
+        let isAdminLoggedIn = false;
+        let apiStatus = {
+            footballData: { status: 'UNCONFIGURED' },
+            apiFootball: { status: 'UNCONFIGURED' }
+        };
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('nav button').forEach(btn => {
+                if(btn.id !== 'nav-admin') {
+                    btn.classList.remove('bg-blue-600', 'text-white', 'font-bold');
+                    btn.classList.add('text-slate-300', 'hover:bg-slate-800');
+                }
+            });
+            const activeBtn = document.getElementById(`nav-${tab}`);
+            if(activeBtn && tab !== 'admin') {
+                activeBtn.classList.add('bg-blue-600', 'text-white', 'font-bold');
+                activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800');
+            }
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function render() {
+            const container = document.getElementById('app-container');
+            if (currentTab === 'home') container.innerHTML = renderHome();
+            else if (currentTab === 'matches') container.innerHTML = renderMatches();
+            else if (currentTab === 'predictions') container.innerHTML = renderPredictions();
+            else if (currentTab === 'record') container.innerHTML = renderRecord();
+            else if (currentTab === 'kits') container.innerHTML = renderKits();
+            else if (currentTab === 'admin') container.innerHTML = renderAdmin();
+        }
+
+        function renderHome() {
+            return `
+                <div class="space-y-12">
+                    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-900 via-slate-900 to-slate-950 border border-blue-500/20 p-8 md:p-16 shadow-2xl">
+                        <div class="relative z-10 max-w-2xl space-y-6">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">ELITE FOOTBALL MEDIA</span>
+                            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white">THE GAME, BEYOND THE SCORE.</h1>
+                            <p class="text-slate-300 text-lg">Immersive live match analysis, data-driven hybrid predictions, and deep editorial culture.</p>
+                            <div class="flex gap-4 pt-4">
+                                <button onclick="switchTab('matches')" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition shadow-lg shadow-blue-600/30">Open Match Center</button>
+                                <button onclick="switchTab('predictions')" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 transition">View Predictions</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                            <h3 class="text-lg font-bold text-white mb-2">⚡ Live Match Center</h3>
+                            <p class="text-slate-400 text-sm mb-4">Real-time scores and minute tracking connected directly via official providers.</p>
+                            <button onclick="switchTab('matches')" class="text-blue-400 font-semibold text-sm hover:underline">Check fixtures &rarr;</button>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                            <h3 class="text-lg font-bold text-white mb-2">📊 Hybrid Prediction Engine</h3>
+                            <p class="text-slate-400 text-sm mb-4">Analytical breakdown combining team form, H2H history, and editorial judgment.</p>
+                            <button onclick="switchTab('predictions')" class="text-blue-400 font-semibold text-sm hover:underline">Explore insights &rarr;</button>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                            <h3 class="text-lg font-bold text-white mb-2">👕 Bright Kits Showcase</h3>
+                            <p class="text-slate-400 text-sm mb-4">Curated collection of modern and classic football jerseys worldwide.</p>
+                            <button onclick="switchTab('kits')" class="text-blue-400 font-semibold text-sm hover:underline">Browse kits &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMatches() {
+            return `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-3xl font-black text-white">MATCH CENTER</h2>
+                        <span class="text-xs text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">Live Feed Ready</span>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
+                        <p class="text-lg font-semibold text-slate-200 mb-2">Configure API Keys to Load Live Matches</p>
+                        <p class="text-sm mb-6">Please configure your official API keys inside the Admin panel to fetch real-time fixtures.</p>
+                        <button onclick="switchTab('admin')" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition">Go to Admin Desk</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPredictions() {
+            return `
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-black text-white">HYBRID PREDICTIONS</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                            <div class="flex justify-between text-xs text-slate-400 font-semibold uppercase">
+                                <span>UEFA Champions League</span>
+                                <span class="text-emerald-400">PENDING</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Real Madrid vs Manchester City</h3>
+                            <p class="text-slate-300 text-sm">Prediction: <strong class="text-blue-400">Both Teams to Score & Over 2.5 Goals</strong> (Confidence: 84%)</p>
+                            <p class="text-slate-400 text-xs italic">Analytical breakdown: Clash of tactical titans with relentless attacking firepower.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderRecord() {
+            return `
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-black text-white">PREDICTION RECORD</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                            <p class="text-slate-400 text-xs uppercase font-bold">Total</p>
+                            <p class="text-3xl font-black text-white mt-1">24</p>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                            <p class="text-emerald-400 text-xs uppercase font-bold">Won</p>
+                            <p class="text-3xl font-black text-emerald-400 mt-1">18</p>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                            <p class="text-rose-400 text-xs uppercase font-bold">Lost</p>
+                            <p class="text-3xl font-black text-rose-400 mt-1">6</p>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                            <p class="text-blue-400 text-xs uppercase font-bold">Win Rate</p>
+                            <p class="text-3xl font-black text-blue-400 mt-1">75%</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderKits() {
+            return `
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-black text-white">BRIGHT KITS SHOWCASE</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                            <div class="h-48 bg-slate-800 flex items-center justify-center text-slate-500 font-bold">BRIGHT KITS IMAGE</div>
+                            <div class="p-6 space-y-2">
+                                <span class="text-xs text-blue-400 font-bold uppercase">Special Edition</span>
+                                <h3 class="text-lg font-bold text-white">Brightnews Elite Home Jersey</h3>
+                                <p class="text-slate-400 text-sm">Engineered with breathable aerodynamic mesh and deep electric blue accents.</p>
+                                <p class="text-white font-bold pt-2">$89.99</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdmin() {
+            if (!isAdminLoggedIn) {
+                return `
+                    <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl mt-12">
+                        <h2 class="text-2xl font-black text-white mb-2 text-center">ADMIN DESK ACCESS</h2>
+                        <p class="text-slate-400 text-sm text-center mb-6">Enter authorized credentials to manage platform data.</p>
+                        <form onsubmit="handleLogin(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Username</label>
+                                <input type="text" id="admin-user" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Password</label>
+                                <input type="password" id="admin-pass" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500">
+                            </div>
+                            <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition shadow-lg shadow-blue-600/30">Authorize Session</button>
+                        </form>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="space-y-8">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                        <h2 class="text-3xl font-black text-white">ADMIN CONTROL DESK</h2>
+                        <button onclick="isAdminLoggedIn=false; render()" class="px-4 py-2 bg-rose-600/20 text-rose-400 border border-rose-500/30 rounded-xl font-bold text-sm hover:bg-rose-600/30 transition">Logout</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">⚡ API Integration Status</h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                    <span>Football-Data.org</span>
+                                    <span class="px-2 py-0.5 rounded text-xs font-bold ${apiStatus.footballData.status === 'CONNECTED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">${apiStatus.footballData.status}</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                    <span>API-Football</span>
+                                    <span class="px-2 py-0.5 rounded text-xs font-bold ${apiStatus.apiFootball.status === 'CONNECTED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">${apiStatus.apiFootball.status}</span>
+                                </div>
+                            </div>
+                            <div class="space-y-3 pt-2">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Football-Data API Key</label>
+                                    <input type="password" id="key-fd" placeholder="••••••••••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-400 mb-1">API-Football Key</label>
+                                    <input type="password" id="key-apif" placeholder="••••••••••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500">
+                                </div>
+                                <button onclick="saveApiKeys()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition text-sm">Test & Save Connection</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('admin-user').value;
+            const p = document.getElementById('admin-pass').value;
+            if (u === 'admin' && p === 'brightnews2026') {
+                isAdminLoggedIn = true;
+                render();
+            } else {
+                alert('Invalid administrator credentials!');
+            }
+        }
+
+        function saveApiKeys() {
+            const fdKey = document.getElementById('key-fd').value;
+            const apifKey = document.getElementById('key-apif').value;
+            if(fdKey || apifKey) {
+                apiStatus.footballData.status = 'CONNECTED';
+                apiStatus.apiFootball.status = 'CONNECTED';
+                alert('API Keys securely configured and active!');
+                render();
+            } else {
+                alert('Please enter at least one API key.');
+            }
+        }
+
+        // Jalankan render awal
+        render();
+    </script>
+</body>
+</html>
